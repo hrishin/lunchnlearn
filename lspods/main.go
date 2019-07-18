@@ -4,25 +4,18 @@ import (
 	"fmt"
 	"log"
 	"os"
-
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"k8s.io/client-go/kubernetes"
-	"k8s.io/client-go/tools/clientcmd"
 )
 
 func main() {
-	homeDir := os.Getenv("HOME")
-	kubeconfigPath := homeDir + "/.kube/config"
-	config, err := clientcmd.BuildConfigFromFlags("", kubeconfigPath)
-	if err != nil {
-		log.Fatal(err)
+	argsWithoutProg := os.Args[1:]
+	if len(argsWithoutProg) == 0 {
+		log.Fatal("no resource is mentioned \nExample command : ls pods")
+
 	}
-	clientset, err := kubernetes.NewForConfig(config)
-	if err != nil {
-		log.Fatal(err)
+
+	if argsWithoutProg[0] != "pods" {
+		log.Fatal("unknown resource kind")
 	}
-	pods, err := clientset.CoreV1().Pods("kube-system").List(metav1.ListOptions{})
-	for _, p := range pods.Items {
-		fmt.Println(p.Name)
-	}
+
+	fmt.Println("lets print the pods list")
 }
