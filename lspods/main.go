@@ -1,9 +1,11 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"os"
+
+	meta_v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/client-go/kubernetes"
 )
 
 func main() {
@@ -17,5 +19,6 @@ func main() {
 		log.Fatal("unknown resource kind")
 	}
 
-	fmt.Println("lets print the pods list")
+	var cs *kubernetes.Clientset
+	cs.CoreV1().Pods("kube-system").List(meta_v1.ListOptions{})
 }
