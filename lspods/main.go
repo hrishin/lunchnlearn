@@ -14,7 +14,6 @@ func main() {
 	argsWithoutProg := os.Args[1:]
 	if len(argsWithoutProg) == 0 {
 		log.Fatal("no resource is mentioned \nExample command : ls pods")
-
 	}
 
 	if argsWithoutProg[0] != "pods" {
@@ -32,9 +31,12 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+
 	pods, err := clientset.CoreV1().Pods("kube-system").List(meta_v1.ListOptions{})
 	if err != nil {
 		log.Fatalf("failed to gte pods %v", err)
 	}
-	fmt.Printf("pods %v ", pods)
+	for _, p := range pods.Items {
+		fmt.Println(p.Name)
+	}
 }
